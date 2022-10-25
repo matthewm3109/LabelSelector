@@ -88,6 +88,9 @@
             // created for tag-it.
             tabIndex: null,
 
+            //Set the defatult value of autocompleteMatchAnywhere variable
+            autocompleteMatchAnywhere: false,
+
             // Event callbacks.
             beforeTagAdded      : null,
             afterTagAdded       : null,
@@ -144,9 +147,13 @@
                 this.options.autocomplete.source = function(search, showChoices) {
                     var filter = search.term.toLowerCase();
                     var choices = $.grep(this.options.availableTags, function(element) {
-                        // Only match autocomplete options that begin with the search term.
-                        // (Case insensitive.)
-                        return (element.toLowerCase().indexOf(filter) === 0);
+                        // if autocompleteMatchAnywhere is turned on, then search everywhere in a text 
+                        // otherwise, use the previously implemented process to find what elements start with the search criteria 
+                        if (that.options.autocompleteMatchAnywhere) {
+                            return (element.toLowerCase().search(filter) !== -1);
+                        } else {
+                            return (element.toLowerCase().indexOf(filter) === 0);
+                        }
                     });
                     if (!this.options.allowDuplicates) {
                         choices = this._subtractArray(choices, this.assignedTags());

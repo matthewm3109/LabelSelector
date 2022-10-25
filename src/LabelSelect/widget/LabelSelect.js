@@ -33,6 +33,7 @@ define([
 
         _readOnly: false,
         _constructed: false,
+        _autocompleteMatchAnywhere : false,
 
         postCreate: function() {
             mx.logger.debug(this.id + ".postCreate :: 4.5.1");
@@ -44,6 +45,7 @@ define([
             this._tagCache = {}; //we need this to set references easily.
 
             this._readOnly = this.readOnly || this.get("disabled") || this.readonly;
+            this._autocompleteMatchAnywhere = this.autocompleteMatchAnywhere;
         },
 
         update: function(obj, callback) {
@@ -303,6 +305,7 @@ define([
                 singleFieldNode: null,
                 tabIndex: null,
                 placeholderText: null,
+                autocompleteMatchAnywhere : this._autocompleteMatchAnywhere,
 
                 afterTagAdded: lang.hitch(this, function(event, ui) {
                     this._clearValidations();
